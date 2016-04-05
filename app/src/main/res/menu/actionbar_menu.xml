@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:res="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Lock"
+          android:id="@+id/action_lock"
+          android:icon="@android:drawable/ic_lock_idle_lock"
+          android:orderInCategory="100"
+          res:showAsAction="withText"/>
+</menu>
