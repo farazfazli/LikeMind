@@ -28,6 +28,9 @@ public class DetailActivity extends AppCompatActivity {
     private Button mYesButton;
     private Button mNoButton;
 
+    private String memberId;
+    private String mAuthor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,16 @@ public class DetailActivity extends AppCompatActivity {
         mYesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Generate room
+                String roomName;
+                if (Long.parseLong(id) > Long.parseLong(memberId)) {
+                    roomName = id + memberId;
+                } else {
+                    roomName = memberId + id;
+                }
                 Intent intent = new Intent(DetailActivity.this, ChatActivity.class);
+                intent.putExtra(Constants.AUTHOR, mAuthor);
+                intent.putExtra(Constants.ROOM_NAME, roomName);
                 startActivity(intent);
             }
         });
@@ -95,13 +107,14 @@ public class DetailActivity extends AppCompatActivity {
         mFirebaseRef.child("info").child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                memberId = (String) dataSnapshot.child("memberId").getValue();
                 String thumbnailLink = (String) dataSnapshot.child("thumbnailLink").getValue();
-                String title = (String) dataSnapshot.child("name").getValue();
+                mAuthor = (String) dataSnapshot.child("name").getValue();
 
                 System.out.println(mFirebaseRef.getKey());
 
 
-                mTitle.setText(title);
+                mTitle.setText(mAuthor);
                 Picasso.with(DetailActivity.this).load(thumbnailLink).into(mProfilePicture);
 
             }

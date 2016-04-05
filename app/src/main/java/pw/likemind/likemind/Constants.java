@@ -20,4 +20,6 @@ public class Constants {
     public static final String TWO_WEEKS_EXPIRY = "ageless";
     // --- SHAREDPREFERENCES ---
     public static final String PREFS_FILE = "pw.likemind.prefsfile";
+    public static final String ROOM_NAME = "ROOM_NAME";
+    public static final String AUTHOR = "AUTHOR";
 }

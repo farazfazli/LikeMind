@@ -6,12 +6,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
@@ -21,11 +18,6 @@ import com.firebase.ui.auth.core.FirebaseLoginError;
 public class ChatActivity extends FirebaseLoginBaseActivity {
 
     private TextView mTitle;
-    private TextView mNameInput;
-    private Spinner mChannelsSpinner;
-    private CheckBox mCustomCheckBox;
-    private EditText mChatRoomInput;
-    private Button mJoinButton;
 
     private ListView mChatListView;
     private EditText mInputField;
@@ -44,53 +36,17 @@ public class ChatActivity extends FirebaseLoginBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        if(getIntent().getExtras() != null) {
+            mAuthor = getIntent().getExtras().getString(Constants.AUTHOR);
+            createRoom(getIntent().getExtras().getString(Constants.ROOM_NAME));
+        }
+
         mTitle = (TextView) findViewById(R.id.title);
         mChatListView = (ListView) findViewById(R.id.chat_list);
         mInputField = (EditText) findViewById(R.id.message_input);
         mSubmitButton = (Button) findViewById(R.id.submit_button);
 
         mFirebaseRootRef = new Firebase("https://fiery-heat-9768.firebaseio.com/"); // Create new Firebase object
-
-        mChannelsSpinner.setEnabled(true);
-        mChatRoomInput.setEnabled(false);
-
-        mCustomCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCustomCheckBox.isChecked()) {
-                    mChannelsSpinner.setEnabled(false);
-                    mChatRoomInput.setEnabled(true);
-                } else {
-                    mChatRoomInput.setText("");
-                    mChannelsSpinner.setEnabled(true);
-                    mChatRoomInput.setEnabled(false);
-                }
-            }
-        });
-
-        mJoinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuthor = mNameInput.getText().toString();
-                if (mCustomCheckBox.isChecked() == false) {
-                    createRoom(mChannelsSpinner.getSelectedItem().toString());
-                } else {
-                    String name = mAuthor;
-                    String roomName = mChatRoomInput.getText().toString();
-
-                    if (name.length() > 1 && roomName.length() > 1 && name.matches("[a-zA-Z]+") && roomName.matches("[a-zA-Z]+")) {
-                        createRoom(roomName);
-                    } else if (roomName.length() <= 1) {
-                        mInputField.setError("Please enter a longer room name!");
-                    } else if (name.length() <= 1) {
-                        mNameInput.setError("Please enter a longer nickname!");
-                    } else {
-                        Toast.makeText(ChatActivity.this, "Input fields must contain letters only!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,25 +147,5 @@ public class ChatActivity extends FirebaseLoginBaseActivity {
                 break;
         }
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        // If not on title page
-        if (mTitle.getVisibility() == View.INVISIBLE) {
-            mTitle.setVisibility(View.VISIBLE);
-            mNameInput.setVisibility(View.VISIBLE);
-            mChannelsSpinner.setVisibility(View.VISIBLE);
-            mCustomCheckBox.setVisibility(View.VISIBLE);
-            mChatRoomInput.setVisibility(View.VISIBLE);
-            mJoinButton.setVisibility(View.VISIBLE);
-            mInputField.setVisibility(View.INVISIBLE);
-            mSubmitButton.setVisibility(View.INVISIBLE);
-            mChatListView.setVisibility(View.INVISIBLE);
-            // change chat bar title
-        } else {
-            // close out of app
-            super.onBackPressed();
-        }
     }
 }
