@@ -12,3 +12,7 @@ LikeMind is an app which lets users interact with people nearby in similar meetu
 # Trello Board
 
 https://trello.com/b/ktyTCUSE/mind-link
+
+# Slides
+
+https://goo.gl/liFrE3
