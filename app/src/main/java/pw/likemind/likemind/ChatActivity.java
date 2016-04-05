@@ -1,6 +1,7 @@
 package pw.likemind.likemind;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,15 +37,18 @@ public class ChatActivity extends FirebaseLoginBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        if(getIntent().getExtras() != null) {
-            mAuthor = getIntent().getExtras().getString(Constants.AUTHOR);
-            createRoom(getIntent().getExtras().getString(Constants.ROOM_NAME));
-        }
-
         mTitle = (TextView) findViewById(R.id.title);
         mChatListView = (ListView) findViewById(R.id.chat_list);
         mInputField = (EditText) findViewById(R.id.message_input);
         mSubmitButton = (Button) findViewById(R.id.submit_button);
+
+        mInputField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                mSubmitButton.callOnClick();
+                return true;
+            }
+        });
 
         mFirebaseRootRef = new Firebase("https://fiery-heat-9768.firebaseio.com/"); // Create new Firebase object
 
@@ -53,7 +57,7 @@ public class ChatActivity extends FirebaseLoginBaseActivity {
             public void onClick(View v) {
                 String messageText = mInputField.getText().toString();
 
-                if (messageText.length() > 0) {
+                if (messageText.trim().length() > 0) {
                     Message message = new Message(mAuthor, messageText); // create new message object
                     mMessagesRef.push().setValue(message); // push new message object
                     mInputField.setText("");
@@ -61,6 +65,15 @@ public class ChatActivity extends FirebaseLoginBaseActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(getIntent().getExtras() != null) {
+            mAuthor = getIntent().getExtras().getString(Constants.AUTHOR);
+            createRoom(getIntent().getExtras().getString(Constants.ROOM_NAME));
+        }
     }
 
     private void scrollListViewToBottom() {
