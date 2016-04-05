@@ -1,3 +1,14 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Project Readme :fire:
+# LikeMind
 
-> Make sure to edit this file. You are required to provide a readme file describing what the app does, links to your Trello board, and any bugs that may exist!
+LikeMind is an app which lets users interact with people nearby in similar meetup groups.
+
+# Features
+
+* Meetup Login
+* Find people near you
+* Start a one-on-one chat
+* and much more!
+
+# Trello Board
+
+https://trello.com/b/ktyTCUSE/mind-link
